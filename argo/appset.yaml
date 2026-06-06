@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: joker-apps-auto
+  namespace: argocd
+spec:
+  # Le "générateur" va lister les dossiers dans ton Git
+  generators:
+  - git:
+      repoURL: 'https://github.com/kelbazz/joker-infra-k8s.git'
+      revision: HEAD
+      directories:
+      - path: apps/* # Il va tracker tout ce qu'il y a là-dedans
+  # Le "template" génère l'Application Argo dynamiquement
+  template:
+    metadata:
+      name: '{{path.basename}}' # Il prend direct le nom du dossier !
+    spec:
+      project: default
+      source:
+        repoURL: 'https://github.com/kelbazz/joker-infra-k8s.git'
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{path.basename}}' # Il crée un namespace du même nom
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
