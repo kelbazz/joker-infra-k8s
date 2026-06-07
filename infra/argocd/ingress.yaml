@@ -9,7 +9,7 @@ metadata:
 spec:
   tls:
     - hosts:
-        - argocd.kelbaz.dev
+        - cd.kelbaz.dev
       secretName: argocd-tls
   rules:
     - host: cd.kelbaz.dev
