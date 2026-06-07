@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seukai-bot
+  namespace: seukai-bot
+  labels:
+    app: seukai-bot
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # Important pour les bots avec sqlite/fichiers locaux
+  selector:
+    matchLabels:
+      app: seukai-bot
+  template:
+    metadata:
+      labels:
+        app: seukai-bot
+    spec:
+      imagePullSecrets:
+        - name: ghcr-kelbaz-secret # <--- Le VIP Pass pour GHCR
+      containers:
+        - name: seukai-bot
+          image: ghcr.io/kelbazz/seukai-bot:latest
+          imagePullPolicy: Always
+          args: ["deno", "task", "start"]
+          envFrom:
+            # On charge toutes les variables "non sensibles" (tes IDs) depuis la ConfigMap
+            - configMapRef:
+                name: seukai-bot-config
+          env:
+            # On charge le token sensible depuis le vrai Secret qu'on a créé à la main
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: seukai-bot-secrets
+                  key: TOKEN
+          volumeMounts:
+            - name: bot-data
+              mountPath: /app/data
+      volumes:
+        - name: bot-data
+          persistentVolumeClaim:
+            claimName: bot-data-pvc
