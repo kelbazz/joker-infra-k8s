@@ -34,9 +34,3 @@ spec:
             limits:
               memory: "10Gi" # On lui laisse de la marge sur tes 16Go
               cpu: "4000m"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 20
