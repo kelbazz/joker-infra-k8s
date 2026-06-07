@@ -1,0 +1,65 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: joker-infra-auto
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: "https://github.com/kelbazz/joker-infra-k8s.git"
+        revision: HEAD
+        directories:
+          - path: infra/*
+  template:
+    metadata:
+      name: "{{path.basename}}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "1"
+    spec:
+      project: default
+      source:
+        repoURL: "https://github.com/kelbazz/joker-infra-k8s.git"
+        targetRevision: HEAD
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: joker-apps-auto
+  namespace: argocd
+spec:
+  generators:
+    - git:
+        repoURL: "https://github.com/kelbazz/joker-infra-k8s.git"
+        revision: HEAD
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: "{{path.basename}}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "5"
+    spec:
+      project: default
+      source:
+        repoURL: "https://github.com/kelbazz/joker-infra-k8s.git"
+        targetRevision: HEAD
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{path.basename}}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
