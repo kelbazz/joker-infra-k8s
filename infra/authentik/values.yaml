@@ -1,7 +1,7 @@
 authentik:
   # Config globale d'Authentik
   authentik:
-    secretKeySecretName: "authentik-secret"
+    existingSecret: "authentik-secret"
     error_reporting:
       enabled: false
 
