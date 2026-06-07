@@ -1,0 +1,11 @@
+apiVersion: v2
+name: authentik-local
+description: Mon wrapper chart pour Authentik sur Joker
+type: application
+version: 1.0.0
+appVersion: "2026.5.2"
+
+dependencies:
+  - name: authentik
+    version: 2026.5.2
+    repository: https://charts.goauthentik.io
