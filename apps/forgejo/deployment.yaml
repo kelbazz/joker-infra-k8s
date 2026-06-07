@@ -24,18 +24,14 @@ spec:
             - containerPort: 22
               name: ssh
           env:
-            - name: FORGEJO__security__INSTALL_LOCK
-              value: "true" # Sécurise l'install directe
+            - name: forgejo
+              envFrom:
+                - configMapRef:
+                    name: forgejo-config
           volumeMounts:
             - name: forgejo-data
               mountPath: /data
-            - name: forgejo-config-volume
-              mountPath: /data/forgejo/conf/app.ini
-              subPath: app.ini
       volumes:
         - name: forgejo-data
           persistentVolumeClaim:
             claimName: forgejo-pvc
-        - name: forgejo-config-volume
-          configMap:
-            name: forgejo-config

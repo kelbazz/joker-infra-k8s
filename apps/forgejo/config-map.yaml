@@ -4,16 +4,10 @@ metadata:
   name: forgejo-config
   namespace: forgejo
 data:
-  app.ini: |
-    [server]
-    ROOT_URL = https://git.kelbaz.dev/
+  FORGEJO____APP_NAME: "Gitbaz"
+  FORGEJO____APP_SLOGAN: "Git good or get rekt"
 
-    [service]
-    # Empêche les gens de s'inscrire tout seuls
-    DISABLE_REGISTRATION = true
-    # Force l'utilisation d'un compte local
-    ALLOW_ONLY_EXTERNAL_REGISTRATION = false
+  FORGEJO__SERVICE__ENABLE_CAPTCHA: "true"
+  FORGEJO__SERVICE__REQUIRE_EXTERNAL_REGISTRATION_CAPTCHA: "true"
 
-    [oauth2]
-    # Désactive l'authentification externe
-    ENABLE = false
+  FORGEJO__SERVER__ROOT_URL: "https://git.kelbaz.dev"
