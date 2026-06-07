@@ -5,6 +5,9 @@ metadata:
   namespace: seukai-bot
   labels:
     app: seukai-bot
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: seukai-bot=ghcr.io/kelbazz/seukai-bot
+    argocd-image-updater.argoproj.io/seukai-bot.update-strategy: latest
 spec:
   replicas: 1
   strategy:
