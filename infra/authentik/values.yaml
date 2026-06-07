@@ -1,11 +1,9 @@
 authentik:
-  # Config globale d'Authentik
   authentik:
     existingSecret: "authentik-secret"
     error_reporting:
       enabled: false
 
-  # On bride le serveur pour pas faire fumer tes 16 Go de RAM
   server:
     resources:
       limits:
@@ -13,7 +11,6 @@ authentik:
       requests:
         memory: "150Mi"
 
-  # On bride le worker en arrière-plan
   worker:
     resources:
       limits:
@@ -21,7 +18,6 @@ authentik:
       requests:
         memory: "150Mi"
 
-  # Base de données Postgres intégrée et bridée
   postgresql:
     enabled: true
     postgresqlResources:
@@ -31,7 +27,6 @@ authentik:
       enabled: true
       size: 5Gi
 
-  # Cache Redis intégré et bridé
   redis:
     enabled: true
     resources:
