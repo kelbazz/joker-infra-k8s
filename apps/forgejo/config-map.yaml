@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: forgejo-config
+  namespace: forgejo
+data:
+  app.ini: |
+    [server]
+    ROOT_URL = https://git.kelbaz.dev/
+
+    [service]
+    # Empêche les gens de s'inscrire tout seuls
+    DISABLE_REGISTRATION = true
+    # Force l'utilisation d'un compte local
+    ALLOW_ONLY_EXTERNAL_REGISTRATION = false
+
+    [oauth2]
+    # Désactive l'authentification externe
+    ENABLE = false

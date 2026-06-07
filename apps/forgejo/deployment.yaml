@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: forgejo
+  namespace: forgejo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate # SQLite n'aime pas être ouvert par deux pods en même temps
+  selector:
+    matchLabels:
+      app: forgejo
+  template:
+    metadata:
+      labels:
+        app: forgejo
+    spec:
+      containers:
+        - name: forgejo
+          image: codeberg.org/forgejo/forgejo:8
+          ports:
+            - containerPort: 3000
+              name: http
+            - containerPort: 22
+              name: ssh
+          env:
+            - name: FORGEJO__security__INSTALL_LOCK
+              value: "true" # Sécurise l'install directe
+          volumeMounts:
+            - name: forgejo-data
+              mountPath: /data
+            - name: forgejo-config-volume
+              mountPath: /data/forgejo/conf/app.ini
+              subPath: app.ini
+      volumes:
+        - name: forgejo-data
+          persistentVolumeClaim:
+            claimName: forgejo-pvc
+        - name: forgejo-config-volume
+          configMap:
+            name: forgejo-config

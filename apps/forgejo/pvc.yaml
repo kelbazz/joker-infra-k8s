@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: forgejo-pvc
+  namespace: forgejo
+spec:
+  accessModes:
+    - ReadWriteOnce # Signifie que le disque est monté par un seul pod en écriture (parfait pour SQLite)
+  resources:
+    requests:
+      storage: 10Gi
