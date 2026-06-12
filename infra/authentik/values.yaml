@@ -1,6 +1,10 @@
+global:
+  envFrom:
+    - secretRef:
+        name: authentik-secret
+
 authentik:
   authentik:
-    existingSecret: "authentik-secret"
     error_reporting:
       enabled: false
 
